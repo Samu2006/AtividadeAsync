@@ -1,0 +1,43 @@
+﻿@model AulaLTP62105.WEBAPP.Models.TarefaA
+
+@{
+    ViewData["Title"] = "Marcador";
+    Layout = "_Layout";
+}
+
+<h2>Marcador</h2>
+
+<h4>TarefaA</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Marcador">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Tempo1" class="control-label"></label>
+                <input asp-for="Tempo1" class="form-control" />
+                <span asp-validation-for="Tempo1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tempo2" class="control-label"></label>
+                <input asp-for="Tempo2" class="form-control" />
+                <span asp-validation-for="Tempo2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tempo3" class="control-label"></label>
+                <input asp-for="Tempo3" class="form-control" />
+                <span asp-validation-for="Tempo3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="B" asp-action="Marcador" class="btn btn-default">Ir para Tarefa B</a>
+    <a asp-controller="C" asp-action="Marcador" class="btn btn-default">Ir para Tarefa C</a>
+
+</div>
+
