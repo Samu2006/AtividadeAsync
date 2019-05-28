@@ -17,17 +17,13 @@ namespace AulaLTP62105.WEBAPP.Controllers
         [HttpPost]
         public async Task<IActionResult> Marcador(TarefaA tempos)
         {
-            Stopwatch watch = new Stopwatch();
-            Stopwatch watch2 = new Stopwatch();
-            watch.Start();
+           
             var resposta1 = Mensagem(tempos.Tempo1);
             var resposta2 = Mensagem(tempos.Tempo2);
             var resposta3 = Mensagem2(tempos.Tempo3);
 
             var tarefa1 = Task.WhenAll(resposta1, resposta2);
-            watch.Stop();
 
-            watch2.Start();
             var resposta4 = Mensagem3(tempos.Tempo1, tempos.Tempo2);
 
             var tarefa2 = Task.WhenAll(resposta3, resposta4);
@@ -36,7 +32,6 @@ namespace AulaLTP62105.WEBAPP.Controllers
             var resltado = await Task.WhenAll(tarefa2, tarefa1);
             msg += $" Termino {DateTime.Now}";
 
-            watch2.Stop();
             var completo = $"Tarefa1:{resposta1.Result} ";
             completo += $" Tarefa2:{resposta2.Result} ";
             completo += $" Tarefa3:{resposta3.Result}";

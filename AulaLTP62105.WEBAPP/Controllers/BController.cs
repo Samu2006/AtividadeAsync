@@ -18,9 +18,7 @@ namespace AulaLTP62105.WEBAPP.Controllers
         [HttpPost]
         public async Task<IActionResult> Marcador(TarefaB tempos)
         {
-            Stopwatch watch = new Stopwatch();
-            Stopwatch watch2 = new Stopwatch();
-            watch.Start();
+
             CancellationTokenSource cancellationSourcer = new CancellationTokenSource();
             var token = cancellationSourcer.Token;
 
@@ -32,14 +30,17 @@ namespace AulaLTP62105.WEBAPP.Controllers
             cancellationSourcer.Cancel();
             var resposta3 = Mensagem(tempos.Tempo1);
             var resposta4 = Mensagem(tempos.Tempo2);
+            var listTask = new List<Task> { resposta3, resposta4 };
+            while (listTask.Count > 0)
+            {
+                var task = await Task.WhenAny(resposta3, resposta4);
+                listTask.Remove(task);
+            }
 
-            watch.Stop();
-            watch2.Start();
             string msg = $"Inicio {DateTime.Now}";
 
             msg += $" Termino {DateTime.Now}";
 
-            watch2.Stop();
             var completo = $"Tarefa1:{resposta1.Result} ";
             completo += $" Tarefa2:{resposta2.Result} ";
             completo += $" Tarefa3:{resposta3.Result}";
@@ -72,6 +73,6 @@ namespace AulaLTP62105.WEBAPP.Controllers
             return resultado;
 
         }
-     
+
     }
 }
