@@ -27,19 +27,24 @@ namespace AulaLTP62105.WEBAPP.Controllers
             var resposta1 = Mensagem(tempos.Tempo1, token);
             var resposta2 = Mensagem(tempos.Tempo2, token);
 
-            var resposta3 = Mensagem(tempos.Tempo2 + tempos.Tempo1, token);
 
             var tarefa1 = await Task.WhenAny(resposta1, resposta2);
             cancellationSourcer.Cancel();
+            var resposta3 = Mensagem(tempos.Tempo1);
+            var resposta4 = Mensagem(tempos.Tempo2);
 
             watch.Stop();
             watch2.Start();
-
-            var tarefa2 = await Task.WhenAll(tarefa1,resposta3);
-
+            string msg = $"Inicio {DateTime.Now}";
+            var tarefa2 =  Task.WhenAll(tarefa1, resposta3);
+            msg += $" Termino {DateTime.Now}";
 
             watch2.Stop();
-            var completo = $"Tarefas terminaram {watch.Elapsed} e {watch2.Elapsed}";
+            var completo = $"Tarefa1:{resposta1.Result} ";
+            completo += $" Tarefa2:{resposta2.Result} ";
+            completo += $" Tarefa3:{resposta3.Result}";
+            completo += $" Tarefa4:{resposta4.Result}";
+            completo += $"Final: {msg} ";
 
             return View("Resultado", completo);
         }
@@ -52,16 +57,19 @@ namespace AulaLTP62105.WEBAPP.Controllers
 
         public async Task<string> Mensagem(int tempo)
         {
+            string msg = $"Inicio {DateTime.Now}";
             await Task.Delay(tempo);
-            return $"Mensagem escrita em {DateTime.Now}";
+            var resultado = msg + $" Mensagem escrita em {DateTime.Now}";
+            return resultado;
         }
         public async Task<string> Mensagem(int tempo, CancellationToken cancellationTolken)
         {
-
-            if (cancellationTolken.IsCancellationRequested)
-                return null;
+            string msg = $"Inicio {DateTime.Now}";
             await Task.Delay(tempo);
-            return $"Mensagem escrita em {DateTime.Now}";
+            if (cancellationTolken.IsCancellationRequested)
+                return "Tarefa Cancelada";
+            var resultado = msg + $" Mensagem escrita em {DateTime.Now}";
+            return resultado;
 
         }
     }

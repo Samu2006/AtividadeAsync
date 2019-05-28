@@ -26,9 +26,13 @@ namespace AulaLTP62105.WEBAPP.Controllers
             watch.Stop();
             
             watch2.Start();
+            string msg = $"Inicio {DateTime.Now}";
             var tarefa1 = await Task.WhenAll(resposta1, resposta2);
+            var resultado = msg + $" Mensagem escrita em {DateTime.Now}";
             watch2.Stop();
-            var completo = $"Tarefas terminaram {watch.Elapsed} e {watch2.Elapsed}";
+            var completo = $"Tarefa1:{resposta1.Result}" +
+                $"Tarefa2:{resposta2.Result}" +
+                $"Resultado:{resultado}";
 
             return View("Resultado", completo);
         }
@@ -41,17 +45,23 @@ namespace AulaLTP62105.WEBAPP.Controllers
 
         public async Task<string> Mensagem(int tempo)
         {
+            string msg = $"Inicio {DateTime.Now}";
             await Task.Delay(tempo);
-            return $"Mensagem escrita em {DateTime.Now}";
+            var resultado = msg + $" Mensagem escrita em {DateTime.Now}";
+            return resultado;
         }
 
         public async Task<string> Mensagem2(int tempo1, int tempo2)
         {
+            var msg = await Mensagem(tempo1 + tempo2);
             var resposta3 = Mensagem(tempo1);
             var resposta4 = Mensagem(tempo2);
 
-            var tarefa2 = await Task.WhenAny(resposta3, resposta4);
-            return $"Mensagem escrita em {DateTime.Now}";
+            var tarefa2 =  Task.WhenAny(resposta3, resposta4);
+            var resultado = msg.ToString();
+            resultado += $"Tarefa3:{resposta3.Result}";
+            resultado += $"Tarefa4:{resposta4.Result}";
+            return resultado;
         }
 
     }
