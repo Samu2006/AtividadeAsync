@@ -27,15 +27,17 @@ namespace AulaLTP62105.WEBAPP.Controllers
             var resposta1 = Mensagem(tempos.Tempo1, token);
             var resposta2 = Mensagem(tempos.Tempo2, token);
 
-            await Task.WhenAny(resposta1, resposta2);
+            var resposta3 = Mensagem(tempos.Tempo2 + tempos.Tempo1, token);
+
+            var tarefa1 = await Task.WhenAny(resposta1, resposta2);
             cancellationSourcer.Cancel();
 
             watch.Stop();
-
             watch2.Start();
-            var resposta3 = Mensagem(tempos.Tempo2 + tempos.Tempo1);
-            var resposta4 = Mensagem(tempos.Tempo1 + tempos.Tempo1);
-            await Task.WhenAll(resposta3, resposta4);
+
+            var tarefa2 = await Task.WhenAll(tarefa1,resposta3);
+
+
             watch2.Stop();
             var completo = $"Tarefas terminaram {watch.Elapsed} e {watch2.Elapsed}";
 

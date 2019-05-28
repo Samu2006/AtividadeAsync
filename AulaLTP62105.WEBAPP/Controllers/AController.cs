@@ -22,25 +22,20 @@ namespace AulaLTP62105.WEBAPP.Controllers
             watch.Start();
             var resposta1 = Mensagem(tempos.Tempo1);
             var resposta2 = Mensagem(tempos.Tempo2);
-            var resposta3 = Mensagem(tempos.Tempo3);
+            var resposta3 = Mensagem3();
 
-            await Task.WhenAll(resposta1, resposta2, resposta3);
+            var tarefa1 = Task.WhenAll(resposta1, resposta2);
             watch.Stop();
 
             watch2.Start();
-            var resposta4 = Mensagem(tempos.Tempo1 + tempos.Tempo3);
-            var resposta5 = Mensagem(tempos.Tempo2 + tempos.Tempo3);
-            var resposta6 = Mensagem(tempos.Tempo1 + tempos.Tempo2);
+            var resposta4 = Mensagem(tempos.Tempo1);
 
-            await Task.WhenAll(resposta4, resposta5, resposta6);
+            var tarefa2 = Task.WhenAll(resposta3, resposta4);
+
+            var resltado = await Task.WhenAll(tarefa2, tarefa1);
             watch2.Stop();
             var completo = $"Tarefas terminaram {watch.Elapsed.TotalMilliseconds} e {watch2.Elapsed.TotalMilliseconds}";
-            //$"{resposta1.GetAwaiter().GetResult().ToString()}" +
-            //$"{resposta2.GetAwaiter().GetResult().ToString()}" +
-            //$"{resposta3.GetAwaiter().GetResult().ToString()}" + 
-            //$"{resposta4.GetAwaiter().GetResult().ToString()}" + 
-            //$"{resposta5.GetAwaiter().GetResult().ToString()}" + 
-            //$"{resposta6.GetAwaiter().GetResult().ToString()}";
+
             return View("Resultado", completo);
         }
 
@@ -55,6 +50,17 @@ namespace AulaLTP62105.WEBAPP.Controllers
         {
             await Task.Delay(tempo);
             return $"Mensagem escrita em {DateTime.Now}";
+        }
+
+        public async Task<string> Mensagem3()
+        {
+            await Task.Delay(2000);
+
+            var resposta5 = Mensagem(1000);
+            var resposta6 = Mensagem(2000);
+            var tarefa = Task.WhenAll(resposta5, resposta6);
+
+            return "Tarefa3 Concluida";
         }
     }
 }
