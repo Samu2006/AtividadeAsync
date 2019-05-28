@@ -24,11 +24,11 @@ namespace AulaLTP62105.WEBAPP.Controllers
             var resposta1 = Mensagem(tempos.Tempo1);
             var resposta2 = Mensagem2(tempos.Tempo1, tempos.Tempo2);
             watch.Stop();
-            
+
             watch2.Start();
-            string msg = $"Inicio {DateTime.Now}";
+            string msg = $"Inicio {DateTime.Now.ToLongTimeString()}";
             var tarefa1 = await Task.WhenAll(resposta1, resposta2);
-            var resultado = msg + $" Mensagem escrita em {DateTime.Now}";
+            var resultado = msg + $" Mensagem escrita em {DateTime.Now.ToLongTimeString()}";
             watch2.Stop();
             var completo = $"Tarefa1:{resposta1.Result}" +
                 $"Tarefa2:{resposta2.Result}" +
@@ -45,22 +45,28 @@ namespace AulaLTP62105.WEBAPP.Controllers
 
         public async Task<string> Mensagem(int tempo)
         {
-            string msg = $"Inicio {DateTime.Now}";
+            string msg = $"Inicio {DateTime.Now.ToLongTimeString()}";
             await Task.Delay(tempo);
-            var resultado = msg + $" Mensagem escrita em {DateTime.Now}";
+            var resultado = msg + $" Mensagem escrita em {DateTime.Now.ToLongTimeString()}";
             return resultado;
         }
 
         public async Task<string> Mensagem2(int tempo1, int tempo2)
         {
-            var msg = await Mensagem(tempo1 + tempo2);
-            var resposta3 = Mensagem(tempo1);
-            var resposta4 = Mensagem(tempo2);
+            var msg = await Mensagem(tempo2);
+            var resposta3 = Mensagem3(tempo1, tempo1 + tempo2);
 
-            var tarefa2 =  Task.WhenAny(resposta3, resposta4);
             var resultado = msg.ToString();
-            resultado += $"Tarefa3:{resposta3.Result}";
-            resultado += $"Tarefa4:{resposta4.Result}";
+            resultado += resposta3.Result;
+            return resultado;
+        }
+        public async Task<string> Mensagem3(int tempo1, int tempo2)
+        {
+            var resposta3 = Mensagem(tempo1 + tempo2);
+            var resposta4 = Mensagem(tempo2);
+            string msg = $"Inicio {DateTime.Now.ToLongTimeString()}";
+            var tarefa2 = await Task.WhenAny(resposta3, resposta4);
+            var resultado = msg + $" Mensagem escrita em {DateTime.Now.ToLongTimeString()}";
             return resultado;
         }
 

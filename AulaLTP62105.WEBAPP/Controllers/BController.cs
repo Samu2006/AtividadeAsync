@@ -36,7 +36,7 @@ namespace AulaLTP62105.WEBAPP.Controllers
             watch.Stop();
             watch2.Start();
             string msg = $"Inicio {DateTime.Now}";
-            var tarefa2 =  Task.WhenAll(tarefa1, resposta3);
+
             msg += $" Termino {DateTime.Now}";
 
             watch2.Stop();
@@ -72,5 +72,6 @@ namespace AulaLTP62105.WEBAPP.Controllers
             return resultado;
 
         }
+     
     }
 }
